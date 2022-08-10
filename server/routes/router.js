@@ -1,6 +1,8 @@
 const { json } = require("body-parser");
+const { application, response } = require("express");
 const express = require("express");
 const users = require("../models/userSchema");
+
 const router = express.Router();
 //const user = require("../models/userSchema");
 
@@ -41,6 +43,33 @@ router.post("/register", async (req, res) => {
         res.status(422).json(error);
     }
 })
+/////////Login
+router.post("/login",async(req,res)=>{
+
+    if(req.body.password && req.body.email){
+    let postUser= await users.findOne(req.body) ;
+    console.log (postUser)
+
+    if (postUser){
+        
+        res.status(201).json(postUser);
+        
+    }
+    
+    else{
+        res.send({result:"No User found"})
+    }
+    
+    }
+    else
+    {
+        res.send({result:"No data Found"});
+    }
+})
+
+
+
+
 
 //////////////get userdata
 router.get("/getdata", async (req, res) => {

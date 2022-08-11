@@ -1,9 +1,15 @@
+'use strict';
 const { json } = require("body-parser");
-const { application, response } = require("express");
+//const { application, response } = require("express");
 const express = require("express");
 const users = require("../models/userSchema");
 
 const router = express.Router();
+const jwt =require('jsonwebtoken');
+//const middleware = require('./middleware');
+
+
+
 //const user = require("../models/userSchema");
 
 
@@ -23,12 +29,15 @@ router.post("/register", async (req, res) => {
 
         res.status(422).json("plz fill the data0");
     }
+
+
+    /////check user  exist/////////////
     try {
 
         const preuser = await users.findOne({ email: email })
         console.log(preuser)
         if (preuser) {
-            res.status(422).json("this is user is are present");
+            res.status(422).json("User are already exist");
         }
         else {
             const adduser = new users({
@@ -43,29 +52,63 @@ router.post("/register", async (req, res) => {
         res.status(422).json(error);
     }
 })
-/////////Login
+
+
+// router.get('/middleware', middleware, (req,res) => {
+//     res.json(data.special);
+//   })
+/////////Login////////////////////////
+
 router.post("/login",async(req,res)=>{
-
-    if(req.body.password && req.body.email){
-    let postUser= await users.findOne(req.body) ;
-    console.log (postUser)
-
-    if (postUser){
+        const {email,password}=req.body
+    const user = await users.findOne(req.body);
+    if(user.email===req.body.email&&user.password===req.body.password)
+    {    console.log(user.email);
+        const token_payload = {email: user.email, password: user.password};
+        let token = jwt.sign(token_payload, "jwt_secret_password", { expiresIn: '2h' });
+          let response = {...user,message: 'Token Created, Authentication Successful!', token: token };
         
-        res.status(201).json(postUser);
+        return res.status(200).json(response);
+    }else{return res.status("409").json("Authentication failed. admin not found.");}
+//      console.log(user)
+//    const result =user.email;
+
+//       if (user.length){
+//         // console.log(user.length)
+//           // create a token using user name and password vaild for 2 hours
+//           const token_payload = {name: user[0].email, password: user[0].password};
+//           console.log(token_payload)
+//           let token = jwt.sign(token_payload, "jwt_secret_password", { expiresIn: '2h' });
+//           let response = { message: 'Token Created, Authentication Successful!', token: token };
+    
+//           // return the information including token as JSON
+//           return res.status(200).json(response);
+    
+//       } else {
+//           return res.status("409").json("Authentication failed. admin not found.");
+//       }
+    });
+   
+    // if(req.body.password && req.body.email){
+    // let postUser= await users.findOne(req.body) ;
+    // console.log (postUser)
+
+    // if (postUser){
         
-    }
+    //     res.status(201).json(postUser);
+        
+    // }
     
-    else{
-        res.send({result:"No User found"})
-    }
+    // else{
+    //     res.send({result:"No User found"})
+    // }
     
-    }
-    else
-    {
-        res.send({result:"No data Found"});
-    }
-})
+    // }
+    // else
+    // {
+    //     res.send({result:"No data Found"});
+    // }
+//})
 
 
 
@@ -120,4 +163,6 @@ router.delete("/deleteuser/:id", async (req, res) => {
         res.status(422).json(error);
     }
 })
+/////////generate token
+
 module.exports = router;

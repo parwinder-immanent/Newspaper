@@ -62,14 +62,18 @@ router.post("/register", async (req, res) => {
 router.post("/login",async(req,res)=>{
         const {email,password}=req.body
     const user = await users.findOne(req.body);
-    if(user.email===req.body.email&&user.password===req.body.password)
+    console.log(user)
+    if(user)
     {    console.log(user.email);
-        const token_payload = {email: user.email, password: user.password};
-        let token = jwt.sign(token_payload, "jwt_secret_password", { expiresIn: '2h' });
-          let response = {...user,message: 'Token Created, Authentication Successful!', token: token };
+        const token_payload = {email: user.email, password: user.password,age:user.age};
         
-        return res.status(200).json(response);
-    }else{return res.status("409").json("Authentication failed. admin not found.");}
+        let token = jwt.sign(token_payload, "jwt_secret_password", { expiresIn: '2h' });
+          let response = {message: 'Token Created, Authentication Successful!', token: token, ...token_payload };
+        
+        return res.status(201).json(response);
+    }
+    else{
+        return res.json({result:"No User found"});}
 //      console.log(user)
 //    const result =user.email;
 
@@ -87,7 +91,7 @@ router.post("/login",async(req,res)=>{
 //       } else {
 //           return res.status("409").json("Authentication failed. admin not found.");
 //       }
-    });
+    })
    
     // if(req.body.password && req.body.email){
     // let postUser= await users.findOne(req.body) ;

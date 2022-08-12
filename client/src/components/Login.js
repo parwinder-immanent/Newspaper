@@ -29,7 +29,7 @@ const Login = () => {
     const submitData = async (e) => {
         e.preventDefault();
         const { email, password } = inpval;
-
+console.log(inpval)
         const res = await fetch("/login", {
             method: "POST",
             headers: {

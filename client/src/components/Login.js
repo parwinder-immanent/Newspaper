@@ -1,7 +1,7 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { useNavigate,NavLink } from 'react-router-dom'
 import { useState } from 'react'
-
+import Navbaar from './Navbaar'
 const Login = () => {
 
     const [inpval, setInp] = useState({
@@ -11,7 +11,7 @@ const Login = () => {
     })
 
 
-
+const navigate=useNavigate();
 
 
 
@@ -28,8 +28,9 @@ const Login = () => {
 
     const submitData = async (e) => {
         e.preventDefault();
+
         const { email, password } = inpval;
-console.log(inpval)
+        console.log(inpval)
         const res = await fetch("/login", {
             method: "POST",
             headers: {
@@ -38,6 +39,8 @@ console.log(inpval)
             body: JSON.stringify({ email, password })
         });
         const data = await res.json();
+        localStorage.setItem('token-info', JSON.stringify(data));
+        
         console.log(data);
         if (res.status === 404 || !data.email) {
 
@@ -46,12 +49,15 @@ console.log(inpval)
 
         }
         else {
+
+            navigate("/home2")
             alert(" Login successful")
             console.log("login sucessfull")
         }
     }
     return (
         <div className="container">
+            <Navbaar/>
             <NavLink to="/">home</NavLink>
             <form className='mt-4'>
                 <div className='row'>

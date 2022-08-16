@@ -1,6 +1,7 @@
 import React  from 'react'
 import { NavLink } from 'react-router-dom'
 import { useState } from 'react'
+import Navbaar from './Navbaar'
 
 const Register = () => {
 
@@ -53,8 +54,10 @@ const Register = () => {
 
     return (
         <div className="container">
+            <Navbaar/>
             <NavLink to="/">home</NavLink>
             <form className='mt-4'>
+                
                 <div className='row'>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">UserName </label>

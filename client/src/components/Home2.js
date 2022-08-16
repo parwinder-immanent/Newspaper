@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import Navbaar from "./Navbaar";
-const Home = () => {
+import Navbaar2 from "./Home2navbar"
+
+
+const Home2 = () => {
 
     const [getuserdata, setUserdata] = useState([]);
-    console.log(getuserdata);
+    //console.log(getuserdata);
 
     const getdata = async (e) => {
 
@@ -17,13 +19,13 @@ const Home = () => {
 
         });
         const data = await res.json();
-        //console.log(data);
+       // console.log(data);
         if (res.status === 422 || !data) {
 
-            console.log("error");
+            //console.log("error");
         } else {
             setUserdata(data);
-            console.log("Get Data")
+            //console.log("Get Data")
         }
     }
     useEffect(() => {
@@ -40,25 +42,43 @@ const deleteuser=async(id)=>{
 
     });
     const deletedata = await res2.json();
-    console.log(deletedata);
+    //console.log(deletedata);
     if (res2.status === 422 || !deletedata) {
 
         console.log("error");
     } else {
-                console.log("Get Data")
+                //console.log("Get Data")
                 getdata();
     }
 }
 useEffect(() => {
     getdata();
 }, [])
+const searchHandle=async (event)=>{
+   
+    let key=event.target.value;
+    console.log(key)
+    if(key){
+    let res2=await fetch(`/search/${key}`);  
+    res2 = await res2.json();
+   console.log(res2);
+   if (res2) {
+
+    setUserdata(res2)
+   } else {
+               console.log("hol")
+              getdata();
+   }
+}
+}
+
 
     return (
         <div className="mt-5">
-            <Navbaar />
+            <Navbaar2/>
             <div className="container">
                 <div className="add_btn mt-2 mb-2">
-                    <NavLink to="/register" className="btn btn-primary"> Add data</NavLink>
+                <NavLink to="/register" className="btn btn-primary"> Add data</NavLink>
                 </div>
                 <table class="table">
                     <thead>
@@ -68,7 +88,12 @@ useEffect(() => {
                             <th scope="col">Email</th>
                             <th scope="col">Age</th>
                             <th scope="col">Password</th>
-
+                            <th scope="col">
+                            <form className="d-flex" role="search">
+                        <input className="form-control me-2"  type="search" placeholder="Search" aria-label="Search" onChange={searchHandle} />
+                        <button className="btn btn-outline-success" type="submit" onSubmit={searchHandle} >Search</button>
+                    </form>
+                    </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,4 +125,4 @@ useEffect(() => {
         </div>
     )
 }
-export default Home
+export default Home2

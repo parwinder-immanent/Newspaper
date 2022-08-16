@@ -67,9 +67,10 @@ router.post("/login",async(req,res)=>{
     {    console.log(user.email);
         const token_payload = {email: user.email, password: user.password,age:user.age};
         
-        let token = jwt.sign(token_payload, "jwt_secret_password", { expiresIn: '2h' });
+        let token = jwt.sign(token_payload, "jwt_secret_password", { expiresIn: '10s' });
+        let result=jwt.verify(token, "jwt_secret_password") ;
           let response = {message: 'Token Created, Authentication Successful!', token: token, ...token_payload };
-        
+        //   navigate("/components/home.js", { replace: true });
         return res.status(201).json(response);
     }
     else{
@@ -167,6 +168,19 @@ router.delete("/deleteuser/:id", async (req, res) => {
         res.status(422).json(error);
     }
 })
-/////////generate token
-
+/////////search bar.........
+router.get("/search/:key",async (req,res)=>{
+    //console.log (req.params.key)
+    let data=await users.find(
+        {
+            "$or":[
+                {"name":{$in:req.params.key}}
+            ]
+        }
+       
+    )
+    console.log(data)
+    res.send(data)
+})
+////////////////////////////////
 module.exports = router;

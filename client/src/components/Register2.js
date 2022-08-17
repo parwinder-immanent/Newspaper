@@ -1,9 +1,9 @@
 import React  from 'react'
 import { NavLink } from 'react-router-dom'
 import { useState } from 'react'
-import Navbaar3 from './HomeNav'
+import Navbaar from './Navbaar'
 
-const Register = () => {
+const Register2 = () => {
 
     const [inpval,setInp]=useState({
         name:"",
@@ -54,7 +54,7 @@ const Register = () => {
 
     return (
         <div className="container">
-            <Navbaar3/>
+            <Navbaar/>
             <NavLink to="/login">home</NavLink>
             <form className='mt-4'>
                 
@@ -81,4 +81,4 @@ const Register = () => {
         </div>
     )
 }
-export default Register
+export default Register2;

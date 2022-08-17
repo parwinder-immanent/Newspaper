@@ -1,14 +1,18 @@
 import React from "react";
-//import { useState} from "react";
+import { useNavigate } from "react-router-dom";
+const Navbaar3 = () => {
+    const navigate=useNavigate();
 
-const Navbaar = () => {
+    const logout = () => {
+        localStorage.removeItem('token-info');
+        navigate("/login")
 
-    
-
+      };
+      
     return (
         <nav className="navbar navbar-expand-lg bg-light">
             <div className="container-fluid">
-                <a className="navbar-brand" href="/">Navbar</a>
+                <a className="navbar-brand" href="/home">Navbar</a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -17,20 +21,13 @@ const Navbaar = () => {
                         <li className="nav-item">
                             <a className="nav-link active" aria-current="page" href="/home2">Home</a>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="/register2">SignUp</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="/login">SignIn</a>
-                        </li>
                         
-                        
-
                     </ul>
-                    <form className="d-flex" role="search">
-                        <input className="form-control me-2" type="search"  placeholder="Search" aria-label="Search" />
-                        <button className="btn btn-outline-success" type="submit" >Search</button>
-                    </form>
+                    <button className="btn-bg:#5bff00" onClickCapture={logout}>logout </button>
+                    {/* <form className="d-flex" role="search">
+                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"  />
+                        <button className="btn btn-outline-success" type="submit">Search</button>
+                    </form> */}
                 </div>
             </div>
         </nav>
@@ -38,4 +35,4 @@ const Navbaar = () => {
 
     )
 }
-export default Navbaar
+export default Navbaar3;

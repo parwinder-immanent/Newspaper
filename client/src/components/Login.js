@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate,NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import Navbaar from './Navbaar'
 const Login = () => {
@@ -58,7 +58,7 @@ const navigate=useNavigate();
     return (
         <div className="container">
             <Navbaar/>
-            <NavLink to="/">home</NavLink>
+            {/* <NavLink to="/home">home</NavLink> */}
             <form className='mt-4'>
                 <div className='row'>
                     {/* <div class="mb-3">
